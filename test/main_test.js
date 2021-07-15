@@ -1,4 +1,4 @@
-import { expect } from "chai";
+const { expect } = require("chai");
 // Test suite
 describe("Mocha", () => {
   // Test spec (unit test)
