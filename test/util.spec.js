@@ -1,13 +1,18 @@
 const chai = require("chai");
 const sinon = require("sinon");
 const sinonChai = require("sinon-chai");
-var Stream = require("stream");
-var stream = new Stream();
+chai.use(require("chai-as-promised"));
 
 const util = require("../src/util");
 
 const expect = chai.expect;
 chai.use(sinonChai);
+
+const postData = {
+  title: "Coding in Javascript",
+  description: "Working with functions in JavaScript",
+  completed: false,
+};
 
 describe("Check if getReqData util method returns valid response", () => {
   let req = {};
@@ -16,33 +21,48 @@ describe("Check if getReqData util method returns valid response", () => {
     req = {
       url: "/api/todo/1/",
       method: "PUT",
-      body: JSON.stringify({
-        title: "Coding in Javascript",
-        description: "Working with functions in JavaScript",
-        completed: false,
-      }),
-      on: sinon.stub().callsFake((event, callback) => {
-        if (event === "data") {
-          callback(req.body);
-        }
-        if (event === "end") {
-          callback();
-        }
-        return this;
-      }),
+      body: JSON.stringify(postData),
     };
   });
 
-  it("Check if both data and end events are listned", async () => {
+  it("should return the req body", async () => {
+    //Arrange
+    req.on = sinon.stub().callsFake((event, callback) => {
+      if (event === "data") {
+        callback(req.body);
+      }
+      if (event === "end") {
+        callback();
+      }
+      return this;
+    });
     //Act
-    await util.getReqData(req);
+    const data = await util.getReqData(req);
     //Assert
-    expect(req.on).to.have.been.calledTwice;
+    expect(data).to.be.deep.equal(postData);
+  });
+
+  it("should return exception when no data is recieved", () => {
+    //Arrange
+    req.on = sinon.stub().callsFake((event, callback) => {
+      if (event === "data") {
+        callback();
+      }
+      if (event === "end") {
+        callback();
+      }
+      return this;
+    });
+    //Act
+    // const data = await util.getReqData(req);
+    //Assert
+    // https://www.chaijs.com/plugins/chai-as-promised/
+    expect(util.getReqData(req)).to.be.rejectedWith(Error);
   });
 });
 
 describe("Check if getIdParam util method returns valid response", () => {
-  it("should return a valid response for a vbalid request", () => {
+  it("should return a valid response for a valid request", () => {
     //Arrange
     const req = {
       url: "/api/todo/1/",
