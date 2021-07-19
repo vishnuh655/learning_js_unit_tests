@@ -53,8 +53,6 @@ describe("Check if getReqData util method returns valid response", () => {
       }
       return this;
     });
-    //Act
-    // const data = await util.getReqData(req);
     //Assert
     // https://www.chaijs.com/plugins/chai-as-promised/
     expect(util.getReqData(req)).to.be.rejectedWith(Error);
@@ -63,25 +61,18 @@ describe("Check if getReqData util method returns valid response", () => {
 
 describe("Check if getIdParam util method returns valid response", () => {
   it("should return a valid response for a valid request", () => {
-    //Arrange
     const req = {
       url: "/api/todo/1/",
       method: "PUT",
     };
-    //Act
     const value = util.getIdParam(req);
-    //Assert
     expect(value).to.be.equal(1);
   });
-  it("should return a valid response for a valid request", () => {
-    //Arrange
+  it.skip("should return underfined if there is no query params", () => {
     const req = {
-      url: "/api/todo/1/",
+      url: "/api/todo/",
       method: "PUT",
     };
-    //Act
-    const value = util.getIdParam(req);
-    //Assert
-    expect(value).to.be.equal(1);
+    expect(util.getIdParam(req)).to.be.undefined;
   });
 });
