@@ -1,0 +1,119 @@
+    <section class="suite">
+      <h1>Check if getTodos controllers returns response</h1>
+      <dl>
+        <dt>Check if getTodos(req, res) makes call to findAll()</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/controller.spec.js</dt>
+        <dd><pre><code>async () =&#x3E; {
+    //Act
+    await new TodoController().getTodos(req, res);
+    //Assert
+    expect(dataStub).to.have.been.calledOnce;
+  }</code></pre></dd>
+        <dt>Check if getTodos(req, res) returns same response as got from findAll()</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/controller.spec.js</dt>
+        <dd><pre><code>async () =&#x3E; {
+    //Arrange
+    //Act
+    await new TodoController().getTodos(req, res);
+    //Assert
+    // expect(data).to.have.been.calledImmediatelyBefore(res.end);
+    expect(res.writeHead).to.have.been.calledWith(200);
+    expect(res.end).to.have.been.calledWithExactly(JSON.stringify(dummyData));
+  }</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Check if updateTodo controllers returns response</h1>
+      <dl>
+        <dt>Check if updateTodo(req, res) makes call to update()</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/controller.spec.js</dt>
+        <dd><pre><code>async () =&#x3E; {
+    //Arrange
+    dataStub = sinon.stub(data, &#x22;update&#x22;).returns(dummyData[0]);
+    //Act
+    await new TodoController().updateTodo(req, res);
+    //Assert
+    expect(dataStub).to.have.been.calledOnce;
+  }</code></pre></dd>
+        <dt>Check if updateTodo(req, res) returns same response as got from findAll()</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/controller.spec.js</dt>
+        <dd><pre><code>async () =&#x3E; {
+    //Arrange
+    dataStub = sinon.stub(data, &#x22;update&#x22;).returns(dummyData[0]);
+    //Act
+    await new TodoController().updateTodo(req, res);
+    //Assert
+    expect(res.writeHead).to.have.been.calledWith(200);
+    expect(res.end).to.have.been.calledWithExactly(
+      JSON.stringify(dummyData[0])
+    );
+  }</code></pre></dd>
+        <dt>retur 404 response if data with given id is not found to update</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/controller.spec.js</dt>
+        <dd><pre><code>async () =&#x3E; {
+    //Arrange
+    dataStub = sinon.stub(data, &#x22;update&#x22;).throws(() =&#x3E; {
+      return new Error(&#x22;Item with id not found&#x22;);
+    });
+    //Act
+    await new TodoController().updateTodo(req, res);
+    //Assert
+    expect(res.writeHead).to.have.been.calledWith(404);
+    expect(res.end).to.have.been.calledWithExactly(
+      JSON.stringify({ error: &#x22;Item with id not found&#x22; })
+    );
+  }</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Check if router calls the expected controller method with right arguments</h1>
+      <dl>
+        <dt>Check if /api/todos GET calls getTodos(req, res)</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/routes.spec.js</dt>
+        <dd><pre><code>//Arrange
+req.url = &#x22;/api/todos&#x22;;
+req.method = &#x22;GET&#x22;;
+todosStub = sinon.stub(TodoController.prototype, &#x22;getTodos&#x22;).returns(true);
+//Act
+routes(req, res);
+//Assert
+expect(todosStub).to.have.been.calledOnceWith(req, res);
+// expect(todosStub).to.have.been.calledOnceWithExactly(req, res);
+// sinon.assert.calledOnceWithExactly(todosStub, req, res);</code></pre></dd>
+        <dt>Check if /api/todo/{id} GET calls getTodo(req, res)</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/routes.spec.js</dt>
+        <dd><pre><code>//Arrange
+req.url = &#x22;/api/todo/1&#x22;;
+req.method = &#x22;GET&#x22;;
+todosStub = sinon.stub(TodoController.prototype, &#x22;getTodo&#x22;).returns(true);
+//Act
+routes(req, res);
+//Assert
+expect(todosStub).to.have.been.calledOnceWith(req, res);</code></pre></dd>
+        <dt>Check if /api/todo POST calls createTodo(req, res)</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/routes.spec.js</dt>
+        <dd><pre><code>//Arrange
+req.url = &#x22;/api/todo&#x22;;
+req.method = &#x22;POST&#x22;;
+todosStub = sinon
+  .stub(TodoController.prototype, &#x22;createTodo&#x22;)
+  .returns(true);
+//Act
+routes(req, res);
+//Assert
+expect(todosStub).to.have.been.calledOnceWith(req, res);</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Check if getReqData util method returns valid response</h1>
+      <dl>
+        <dt>Check if both data and end events are listned</dt>
+        <dt>/home/fingent/projects/learning_mocha/test/util.spec.js</dt>
+        <dd><pre><code>async () =&#x3E; {
+    //Act
+    await util.getReqData(req);
+    //Assert
+    expect(req.on).to.have.been.calledTwice;
+  }</code></pre></dd>
+      </dl>
+    </section>

@@ -20,6 +20,6 @@ module.exports = {
     });
   },
   getIdParam: (req) => {
-    return req.url.split("/")[3];
+    return parseInt(req.url.split("/")[3]);
   },
 };

@@ -9,7 +9,7 @@ const util = require("../src/util");
 const expect = chai.expect;
 chai.use(sinonChai);
 
-describe("Check if getTodos controllers returns response", () => {
+describe("Check if getReqData util method returns valid response", () => {
   let req = {};
   beforeEach(() => {
     //Arrange
@@ -33,8 +33,35 @@ describe("Check if getTodos controllers returns response", () => {
     };
   });
 
-  it("Parses body of the rquest object", async () => {
+  it("Check if both data and end events are listned", async () => {
     //Act
     await util.getReqData(req);
+    //Assert
+    expect(req.on).to.have.been.calledTwice;
+  });
+});
+
+describe("Check if getIdParam util method returns valid response", () => {
+  it("should return a valid response for a vbalid request", () => {
+    //Arrange
+    const req = {
+      url: "/api/todo/1/",
+      method: "PUT",
+    };
+    //Act
+    const value = util.getIdParam(req);
+    //Assert
+    expect(value).to.be.equal(1);
+  });
+  it("should return a valid response for a valid request", () => {
+    //Arrange
+    const req = {
+      url: "/api/todo/1/",
+      method: "PUT",
+    };
+    //Act
+    const value = util.getIdParam(req);
+    //Assert
+    expect(value).to.be.equal(1);
   });
 });
