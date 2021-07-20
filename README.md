@@ -3,7 +3,7 @@
 ## Install
 
 ```
-$ npm install --save-dev gulp-mocha
+$ npm install 
 ```
 ## Run Tests
 
