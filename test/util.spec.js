@@ -68,11 +68,11 @@ describe("Check if getIdParam util method returns valid response", () => {
     const value = util.getIdParam(req);
     expect(value).to.be.equal(1);
   });
-  it.skip("should return undefined if there is no query params", () => {
-    const req = {
-      url: "/api/todo/",
-      method: "PUT",
-    };
-    expect(util.getIdParam(req)).to.be.undefined;
-  });
+  // it.skip("should return undefined if there is no query params", () => {
+  //   const req = {
+  //     url: "/api/todo/",
+  //     method: "PUT",
+  //   };
+  //   expect(util.getIdParam(req)).to.be.undefined;
+  // });
 });

@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "test": "mocha --growl",
+    "test": "mocha",
     "report": "mocha --reporter=doc | cat docs/head.html - docs/tail.html > docs/test.html",
     "coverage": "nyc mocha"
   },
