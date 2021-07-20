@@ -3,8 +3,15 @@
 ## Install
 
 ```
-$ npm install 
+$ npm install
 ```
+
+## Run Test Coverage
+
+```
+$ npm start
+```
+
 ## Run Tests
 
 ```
