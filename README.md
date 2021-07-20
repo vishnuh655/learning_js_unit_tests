@@ -6,7 +6,7 @@
 $ npm install
 ```
 
-## Run Test Coverage
+## Run Server
 
 ```
 $ npm start
